@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `empresa`.`Fornecedor` (
   `cnpj` CHAR(14),
   `nome_fornecedor` VARCHAR(45) NOT NULL UNIQUE,
   `email` VARCHAR(100) NOT NULL UNIQUE,
-  `telefone` INT NOT NULL,
+  `telefone` CHAR(11) NOT NULL,
   PRIMARY KEY (`cnpj`))
 ENGINE = InnoDB;
 
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `empresa`.`Pessoa` (
   `nome` VARCHAR(45) NOT NULL,
   `data_nascimento` DATE NOT NULL,
   `email` VARCHAR(100) NULL UNIQUE,
-  `telefone` INT NOT NULL,
+  `telefone` CHAR(11) NOT NULL,
   PRIMARY KEY (`cpf`))
 ENGINE = InnoDB;
 
