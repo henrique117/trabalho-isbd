@@ -22,7 +22,7 @@ WHERE SKU = 1001;
 
 -- Delete de todos os produtos com quantidade em estoque zerado
 DELETE FROM Produto
-WHERE quantidade_estoque == 0;
+WHERE quantidade_estoque = 0;
 
 -- Delete de todos os SKUs presentes na categoria Games
 DELETE FROM Produto
