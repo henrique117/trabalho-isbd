@@ -239,7 +239,7 @@ ALTER TABLE Exemplo
 ADD COLUMN quantidade INT;
 
 ALTER TABLE Exemplo
-ALTER COLUMN descricao TYPE VARCHAR(50);
+MODIFY COLUMN descricao VARCHAR(50);
 
 ALTER TABLE Exemplo
 RENAME COLUMN id TO id_produto;
