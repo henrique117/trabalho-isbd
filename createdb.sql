@@ -1,4 +1,6 @@
--- Criação das tabelas - a)
+-- ========================
+-- (a) Criação das tabelas do banco de dados
+-- ========================
 
 -- -----------------------------------------------------
 -- Schema empresa
@@ -54,13 +56,13 @@ CREATE TABLE IF NOT EXISTS `empresa`.`Produto` (
   CONSTRAINT `fk_Produto_Categoria`
     FOREIGN KEY (`id_categoria`)
     REFERENCES `empresa`.`Categoria` (`id_categoria`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT,
   CONSTRAINT `fk_Produto_Fornecedor1`
     FOREIGN KEY (`cnpj_fornecedor`)
     REFERENCES `empresa`.`Fornecedor` (`cnpj`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB;
 
 
@@ -88,8 +90,8 @@ CREATE TABLE IF NOT EXISTS `empresa`.`Cliente` (
   CONSTRAINT `fk_Cliente_Pessoa1`
     FOREIGN KEY (`cpf`)
     REFERENCES `empresa`.`Pessoa` (`cpf`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -106,8 +108,8 @@ CREATE TABLE IF NOT EXISTS `empresa`.`Venda` (
   CONSTRAINT `fk_Venda_Cliente1`
     FOREIGN KEY (`cpf_cliente`)
     REFERENCES `empresa`.`Cliente` (`cpf`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB;
 
 
@@ -120,15 +122,15 @@ CREATE TABLE IF NOT EXISTS `empresa`.`Funcionario` (
   `data_contratacao` DATE NOT NULL,
   `carga_horaria` INT NOT NULL DEFAULT 40,
   `cpf` VARCHAR(11),
-  `registro_funcionario` INT NOT NULL,
+  `registro_funcionario` INT AUTO_INCREMENT,
   PRIMARY KEY (`cpf`),
   INDEX `fk_Funcionario_Pessoa1_idx` (`cpf` ASC) VISIBLE,
   UNIQUE INDEX `registro_funcionario_UNIQUE` (`registro_funcionario` ASC) VISIBLE,
   CONSTRAINT `fk_Funcionario_Pessoa1`
     FOREIGN KEY (`cpf`)
     REFERENCES `empresa`.`Pessoa` (`cpf`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -145,8 +147,8 @@ CREATE TABLE IF NOT EXISTS `empresa`.`Compra` (
   CONSTRAINT `fk_Compra_Fornecedor1`
     FOREIGN KEY (`cnpj_fornecedor`)
     REFERENCES `empresa`.`Fornecedor` (`cnpj`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB;
 
 
@@ -165,13 +167,13 @@ CREATE TABLE IF NOT EXISTS `empresa`.`Compoe` (
   CONSTRAINT `fk_Produto_has_Compra_Produto1`
     FOREIGN KEY (`SKU`)
     REFERENCES `empresa`.`Produto` (`SKU`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_Produto_has_Compra_Compra1`
     FOREIGN KEY (`id_compra`)
     REFERENCES `empresa`.`Compra` (`id_compra`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -190,13 +192,13 @@ CREATE TABLE IF NOT EXISTS `empresa`.`Possui` (
   CONSTRAINT `fk_Produto_has_Venda_Produto1`
     FOREIGN KEY (`SKU`)
     REFERENCES `empresa`.`Produto` (`SKU`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_Produto_has_Venda_Venda1`
     FOREIGN KEY (`id_venda`)
     REFERENCES `empresa`.`Venda` (`id_venda`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -219,11 +221,11 @@ CREATE TABLE IF NOT EXISTS `empresa`.`endereco` (
   CONSTRAINT `fk_endereco_Pessoa1`
     FOREIGN KEY (`Pessoa_cpf`)
     REFERENCES `empresa`.`Pessoa` (`cpf`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_endereco_Fornecedor1`
     FOREIGN KEY (`Fornecedor_cnpj`)
     REFERENCES `empresa`.`Fornecedor` (`cnpj`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;

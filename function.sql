@@ -1,3 +1,7 @@
+-- ========================
+-- (i) Funções e Procedimentos
+-- ========================
+
 -- Função vendasCliente:
 --   Calcula o valor total de vendas de um cliente com base no CPF fornecido.
 --   Usa a função SUM para somar o valor das vendas do cliente.
@@ -24,14 +28,15 @@ SELECT vendasCliente('11134567891') AS TotalVendas;
 DELIMITER //
 CREATE FUNCTION produtosZerados()
 RETURNS VARCHAR(100)
+DETERMINISTIC
 BEGIN
-    DECLARE nome_produto VARCHAR(100);
-    SELECT nome
-    INTO nome_produto
+    DECLARE nome_produto_zerado VARCHAR(100);
+    SELECT nome_produto
+    INTO nome_produto_zerado
     FROM Produto
-    WHERE estoque = 0;
+    WHERE quantidade_estoque = 0;
 
-    RETURN nome_produto;
+    RETURN nome_produto_zerado;
 END //
 DELIMITER ;
 

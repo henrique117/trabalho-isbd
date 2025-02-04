@@ -1,4 +1,6 @@
--- Criação das tabelas - a)
+-- ========================
+-- (a) Criação das tabelas do banco de dados
+-- ========================
 
 -- -----------------------------------------------------
 -- Schema empresa
@@ -54,13 +56,13 @@ CREATE TABLE IF NOT EXISTS `empresa`.`Produto` (
   CONSTRAINT `fk_Produto_Categoria`
     FOREIGN KEY (`id_categoria`)
     REFERENCES `empresa`.`Categoria` (`id_categoria`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT,
   CONSTRAINT `fk_Produto_Fornecedor1`
     FOREIGN KEY (`cnpj_fornecedor`)
     REFERENCES `empresa`.`Fornecedor` (`cnpj`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB;
 
 
@@ -106,8 +108,8 @@ CREATE TABLE IF NOT EXISTS `empresa`.`Venda` (
   CONSTRAINT `fk_Venda_Cliente1`
     FOREIGN KEY (`cpf_cliente`)
     REFERENCES `empresa`.`Cliente` (`cpf`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB;
 
 
@@ -120,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `empresa`.`Funcionario` (
   `data_contratacao` DATE NOT NULL,
   `carga_horaria` INT NOT NULL DEFAULT 40,
   `cpf` VARCHAR(11),
-  `registro_funcionario` INT NOT NULL,
+  `registro_funcionario` INT AUTO_INCREMENT,
   PRIMARY KEY (`cpf`),
   INDEX `fk_Funcionario_Pessoa1_idx` (`cpf` ASC) VISIBLE,
   UNIQUE INDEX `registro_funcionario_UNIQUE` (`registro_funcionario` ASC) VISIBLE,
@@ -145,8 +147,8 @@ CREATE TABLE IF NOT EXISTS `empresa`.`Compra` (
   CONSTRAINT `fk_Compra_Fornecedor1`
     FOREIGN KEY (`cnpj_fornecedor`)
     REFERENCES `empresa`.`Fornecedor` (`cnpj`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB;
 
 
@@ -165,13 +167,13 @@ CREATE TABLE IF NOT EXISTS `empresa`.`Compoe` (
   CONSTRAINT `fk_Produto_has_Compra_Produto1`
     FOREIGN KEY (`SKU`)
     REFERENCES `empresa`.`Produto` (`SKU`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_Produto_has_Compra_Compra1`
     FOREIGN KEY (`id_compra`)
     REFERENCES `empresa`.`Compra` (`id_compra`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -190,13 +192,13 @@ CREATE TABLE IF NOT EXISTS `empresa`.`Possui` (
   CONSTRAINT `fk_Produto_has_Venda_Produto1`
     FOREIGN KEY (`SKU`)
     REFERENCES `empresa`.`Produto` (`SKU`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_Produto_has_Venda_Venda1`
     FOREIGN KEY (`id_venda`)
     REFERENCES `empresa`.`Venda` (`id_venda`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -219,16 +221,18 @@ CREATE TABLE IF NOT EXISTS `empresa`.`endereco` (
   CONSTRAINT `fk_endereco_Pessoa1`
     FOREIGN KEY (`Pessoa_cpf`)
     REFERENCES `empresa`.`Pessoa` (`cpf`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_endereco_Fornecedor1`
     FOREIGN KEY (`Fornecedor_cnpj`)
     REFERENCES `empresa`.`Fornecedor` (`cnpj`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
--- Criação de uma tabela de exemplo para ALTER e DROP TABLE (b)
+-- ========================
+-- (b) Criação de uma tabela para exemplos de alter e drop table
+-- ========================
 
 CREATE TABLE Exemplo (
     id INT PRIMARY KEY,
@@ -246,7 +250,9 @@ RENAME COLUMN id TO id_produto;
 
 DROP TABLE IF EXISTS Exemplo;
 
--- Inserções no banco - c)
+-- ========================
+-- (c) Inserts no banco de dados
+-- ========================
 
 INSERT INTO Categoria (nome_categoria, descricao_categoria) VALUES
 ('Eletrônicos', 'Produtos eletrônicos como celulares, TVs e notebooks'),
@@ -323,8 +329,8 @@ INSERT INTO Produto (SKU, nome_produto, descricao_produto, valor_produto_venda, 
 INSERT INTO Pessoa (cpf, nome, data_nascimento, email, telefone) VALUES
 ('12345678901', 'João Silva', '1985-01-15', 'joao.silva@gmail.com', '11987654321'),
 ('23456789012', 'Maria Oliveira', '1990-06-22', 'maria.oliveira@yahoo.com', '21976543210'),
-('34567890123', 'Pedro Santos', '1987-04-10', 'pedro.santos@hotmail.com', '31965432109'),
-('45678901234', 'Ana Costa', '1995-08-05', 'ana.costa@outlook.com', '41954321098'),
+('34567890123', 'Sílvio Santos', '1987-04-10', 'pedro.santos@hotmail.com', '31965432109'),
+('45678901234', 'Ana Castela', '1995-08-05', 'ana.costa@outlook.com', '41954321098'),
 ('56789012345', 'Lucas Almeida', '1992-03-18', 'lucas.almeida@gmail.com', '51943210987'),
 ('67890123456', 'Beatriz Ferreira', '1989-07-27', 'beatriz.ferreira@gmail.com', '61932109876'),
 ('78901234567', 'Fernando Rocha', '1991-12-30', 'fernando.rocha@yahoo.com', '71921098765'),
@@ -372,27 +378,27 @@ INSERT INTO Pessoa (cpf, nome, data_nascimento, email, telefone) VALUES
 ('39912345679', 'Mário Costa', '1986-10-12', 'mario.costa@gmail.com', '41965432104'),
 ('40023456780', 'Renata Alves', '1993-01-09', 'renata.alves@yahoo.com', '51954321093');
 
-INSERT INTO Funcionario (cargo, salario, data_contratacao, carga_horaria, cpf, registro_funcionario) VALUES
-('Gerente', 8500.00, '2020-01-15', 40, '12345678901', 1),
-('Analista de Sistemas', 7500.00, '2021-03-10', 40, '23456789012', 2),
-('Desenvolvedor', 6800.00, '2022-05-18', 40, '34567890123', 3),
-('Analista de Suporte', 4500.00, '2019-06-22', 40, '45678901234', 4),
-('Técnico de TI', 4000.00, '2020-09-01', 40, '56789012345', 5),
-('Engenheiro de Software', 9500.00, '2023-01-02', 40, '67890123456', 6),
-('Coordenador de Projetos', 8000.00, '2021-12-15', 40, '78901234567', 7),
-('Gerente de TI', 9000.00, '2018-11-20', 40, '89012345678', 8),
-('Auxiliar Administrativo', 3000.00, '2020-07-12', 30, '90123456789', 9),
-('Desenvolvedor Frontend', 6500.00, '2022-08-10', 40, '01234567890', 10),
-('Desenvolvedor Backend', 7000.00, '2019-03-05', 40, '11234567891', 11),
-('Gerente de Projetos', 8800.00, '2023-06-21', 40, '22345678902', 12),
-('Analista de Qualidade', 6000.00, '2021-05-08', 40, '33456789013', 13),
-('Especialista em Redes', 7200.00, '2022-10-19', 40, '44567890124', 14),
-('Suporte Técnico', 3500.00, '2018-04-01', 40, '55678901235', 15),
-('Analista de Dados', 7000.00, '2020-09-17', 40, '66789012346', 16),
-('Consultor de TI', 8500.00, '2023-02-27', 40, '77890123457', 17),
-('Programador Mobile', 6900.00, '2022-03-22', 40, '88901234568', 18),
-('Administrador de Banco de Dados', 8000.00, '2021-12-30', 40, '99012345679', 19),
-('Analista de Segurança', 9200.00, '2023-01-25', 40, '10123456780', 20);
+INSERT INTO Funcionario (cargo, salario, data_contratacao, carga_horaria, cpf) VALUES
+('Gerente', 8500.00, '2020-01-15', 40, '12345678901'),
+('Analista de Sistemas', 7500.00, '2021-03-10', 40, '23456789012'),
+('Desenvolvedor', 6800.00, '2022-05-18', 40, '34567890123'),
+('Analista de Suporte', 4500.00, '2019-06-22', 40, '45678901234'),
+('Técnico de TI', 4000.00, '2020-09-01', 40, '56789012345'),
+('Engenheiro de Software', 9500.00, '2023-01-02', 40, '67890123456'),
+('Coordenador de Projetos', 8000.00, '2021-12-15', 40, '78901234567'),
+('Gerente de TI', 9000.00, '2018-11-20', 40, '89012345678'),
+('Auxiliar Administrativo', 3000.00, '2020-07-12', 30, '90123456789'),
+('Desenvolvedor Frontend', 6500.00, '2022-08-10', 40, '01234567890'),
+('Desenvolvedor Backend', 7000.00, '2019-03-05', 40, '11234567891'),
+('Gerente de Projetos', 8800.00, '2023-06-21', 40, '22345678902'),
+('Analista de Qualidade', 6000.00, '2021-05-08', 40, '33456789013'),
+('Especialista em Redes', 7200.00, '2022-10-19', 40, '44567890124'),
+('Suporte Técnico', 3500.00, '2018-04-01', 40, '55678901235'),
+('Analista de Dados', 7000.00, '2020-09-17', 40, '66789012346'),
+('Consultor de TI', 8500.00, '2023-02-27', 40, '77890123457'),
+('Programador Mobile', 6900.00, '2022-03-22', 40, '88901234568'),
+('Administrador de Banco de Dados', 8000.00, '2021-12-30', 40, '99012345679'),
+('Analista de Segurança', 9200.00, '2023-01-25', 40, '10123456780');
 
 INSERT INTO Cliente (data_registro, cpf) VALUES
 ('2022-01-15', '11134567891'),
@@ -825,7 +831,9 @@ INSERT INTO Possui (SKU, id_venda, quantidade_venda, preco_venda) VALUES
 (3001, 49, 68, 80.00),
 (3002, 50, 66, 120.00);
 
--- Exemplos de UPDATE nas tabelas (d)
+-- ========================
+-- (d) Exemplos de updates
+-- ========================
 
 SET sql_safe_updates = 0; -- Seta o safe update para 0 para poder fazer updates usando campos não chave no WHERE
 
@@ -858,7 +866,9 @@ WHERE f.cpf IN (
     WHERE YEAR(p.data_nascimento) < 1990
 );
 
--- Exemplos de delete em 5 tabelas (e)
+-- ========================
+-- (e) Exemplo de deletes
+-- ========================
 
 -- Delete da tabela Funcionários
 -- Delete de uma linha na tabela Funcionario, que possui o cpf 12345678901
@@ -868,13 +878,6 @@ WHERE cpf = 12345678901;
 -- Delete de todos os funcionários com salário menor que 5000
 DELETE FROM Funcionario
 WHERE salario < 5000;
-
--- Delete de todos os funcionários que não possuem vendas registradas
-DELETE FROM Funcionario
-WHERE cpf NOT IN (
-    SELECT cpf_cliente
-    FROM Venda
-);
 
 -- Delete da tabela Produto
 -- Delete de todos os produtos com quantidade em estoque zerado
@@ -917,7 +920,9 @@ WHERE cep = 12345001;
 DELETE FROM Pessoa
 WHERE cpf = '12345678901';
 
--- 12 Consultas diferentes (f)
+-- ========================
+-- (f) 12 consultas diferentes
+-- ========================
 
 -- F1) Consulta com INNER JOIN
 -- Recupera os nomes dos fornecedores e os nomes dos produtos que eles fornecem.
@@ -1044,8 +1049,8 @@ JOIN Fornecedor f ON c.cnpj_fornecedor = f.cnpj;
 -- ========================
 
 -- Criação de Usuários
-CREATE USER 'gestor'@'localhost' IDENTIFIED BY 'senha123';
-CREATE USER 'vendedor'@'localhost' IDENTIFIED BY 'senha456';
+CREATE USER IF NOT EXISTS 'gestor'@'localhost' IDENTIFIED BY 'senha123';
+CREATE USER IF NOT EXISTS 'vendedor'@'localhost' IDENTIFIED BY 'senha456';
 
 -- Concessão de Permissões
 GRANT ALL PRIVILEGES ON empresa.* TO 'gestor'@'localhost'; -- O gestor tem acesso total ao banco
@@ -1053,3 +1058,222 @@ GRANT SELECT, INSERT ON empresa.Venda TO 'vendedor'@'localhost'; -- O vendedor p
 
 -- Revogação de Permissões (remove a permissão de INSERT do 'vendedor')
 REVOKE INSERT ON empresa.Venda FROM 'vendedor'@'localhost';
+
+-- ========================
+-- (i) Funções e Procedimentos
+-- ========================
+
+-- Função vendasCliente:
+--   Calcula o valor total de vendas de um cliente com base no CPF fornecido.
+--   Usa a função SUM para somar o valor das vendas do cliente.
+DELIMITER //
+CREATE FUNCTION vendasCliente(cpf_cliente CHAR(11))
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+BEGIN
+    DECLARE total_vendas DECIMAL(10,2);
+    SELECT SUM(valor_venda)
+    INTO total_vendas FROM Venda
+    WHERE cpf_cliente = venda.cpf_cliente;
+
+    RETURN total_vendas;
+END //
+DELIMITER ;
+
+-- Teste da função
+SELECT vendasCliente('11134567891') AS TotalVendas;
+
+
+-- Função produtosZerados:
+--  Retorna o nome dos produtos que estão sem estoque.
+DELIMITER //
+CREATE FUNCTION produtosZerados()
+RETURNS VARCHAR(100)
+DETERMINISTIC
+BEGIN
+    DECLARE nome_produto_zerado VARCHAR(100);
+    SELECT nome_produto
+    INTO nome_produto_zerado
+    FROM Produto
+    WHERE quantidade_estoque = 0;
+
+    RETURN nome_produto_zerado;
+END //
+DELIMITER ;
+
+-- Teste da função
+SELECT produtosZerados() AS ProdutoSemEstoque;
+
+-- Procedimento promocaoCategoria:
+--   Reduz o preço de venda de todos os produtos de uma categoria de acordo com uma porcentagem.
+--   Usa a função ROUND para arredondar o novo preço de venda.
+DELIMITER //
+CREATE PROCEDURE promocaoCategoria(id_categoria_param INT, porcentagem INT)
+BEGIN
+    UPDATE Produto
+    SET valor_produto_venda = ROUND(valor_produto_venda * (1 - porcentagem / 100.0), 2)
+    WHERE id_categoria = id_categoria_param;
+END;
+
+-- Teste do procedimento
+CALL promocaoCategoria(1, 10);
+
+SELECT * FROM Produto WHERE id_categoria = 1;
+
+-- ========================
+-- (j) Triggers
+-- ========================
+
+-- Trigger de atualizar a quantidade de estoque na venda
+DELIMITER //
+
+CREATE TRIGGER atualizar_estoque_venda
+AFTER INSERT ON Possui
+FOR EACH ROW
+BEGIN
+    DECLARE quantidade INT;
+    SELECT quantidade_estoque INTO quantidade FROM Produto WHERE SKU = NEW.SKU;
+    IF NEW.quantidade_venda > quantidade THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Quantidade de venda maior que a quantidade em estoque';
+    END IF;
+    UPDATE Produto
+    SET quantidade_estoque = quantidade_estoque - NEW.quantidade_venda
+    WHERE SKU = NEW.SKU;
+END;
+//
+DELIMITER ;
+
+-- Trigger de atualizar a quantidade de estoque na compra
+DELIMITER //
+
+CREATE TRIGGER atualizar_estoque_compra
+AFTER INSERT ON Compoe
+FOR EACH ROW
+BEGIN
+  UPDATE Produto
+  SET quantidade_estoque = quantidade_estoque + NEW.quantidade_compra
+  WHERE SKU = NEW.SKU;
+END;
+//
+DELIMITER ;
+
+-- Trigger de atualização de valor da venda
+DELIMITER //
+
+CREATE TRIGGER atualiza_valor_possui
+BEFORE INSERT ON Possui
+FOR EACH ROW
+BEGIN
+    DECLARE preco_unitario DECIMAL(7,2);
+    
+    -- Obter o preço unitário do produto
+    SELECT valor_produto_venda INTO preco_unitario
+    FROM Produto
+    WHERE SKU = NEW.SKU;
+
+    -- Calcular e atualizar o preco_venda
+    SET NEW.preco_venda = NEW.quantidade_venda * preco_unitario;
+END;
+//
+
+DELIMITER ;
+
+-- Trigger de atualização de valor total da venda
+DELIMITER //
+
+CREATE TRIGGER atualiza_valor_venda
+AFTER INSERT ON Possui
+FOR EACH ROW
+BEGIN
+    -- Atualiza o valor total da venda somando os preços de todos os itens
+    UPDATE Venda
+    SET valor_venda = (
+        SELECT SUM(preco_venda)
+        FROM Possui
+        WHERE id_venda = NEW.id_venda
+    )
+    WHERE id_venda = NEW.id_venda;
+END;
+//
+
+DELIMITER ;
+
+-- Trigger de atualização de valor do compoe
+DELIMITER //
+CREATE TRIGGER atualiza_valor_compoe
+BEFORE INSERT ON Compoe
+FOR EACH ROW
+BEGIN
+    DECLARE preco_unitario DECIMAL(7,2);
+    
+    -- Obter o preço unitário do produto
+    SELECT valor_produto_compra INTO preco_unitario
+    FROM Produto
+    WHERE SKU = NEW.SKU;
+
+    -- Calcular e atualizar o preco_compoe
+    SET NEW.preco_compra = NEW.quantidade_compra * preco_unitario;
+END;
+//
+
+DELIMITER ;
+
+-- Trigger de atualização de valor total da compra
+DELIMITER //
+
+CREATE TRIGGER atualiza_valor_compra
+AFTER INSERT ON Compoe
+FOR EACH ROW
+BEGIN
+    -- Atualiza o valor total da compra somando os preços de todos os itens
+    UPDATE Compra
+    SET valor_compra = (
+        SELECT SUM(preco_compra)
+        FROM Compoe
+        WHERE id_compra = NEW.id_compra
+    )
+    WHERE id_compra = NEW.id_compra;
+END;
+//
+
+DELIMITER ;
+
+-- Trigger de delete no estoque
+--   Confere se o produto a ser deletado possui estoque
+--   Se sim, não permite a deleção
+DELIMITER //
+CREATE TRIGGER before_delete_produto
+BEFORE DELETE ON Produto
+FOR EACH ROW
+BEGIN
+    DECLARE quantidade INT;
+    SELECT quantidade_estoque INTO quantidade FROM Produto WHERE SKU = OLD.SKU;
+    IF quantidade > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Produto possui estoque';
+    END IF;
+END;
+//
+
+DELIMITER ;
+
+-- Trigger de update em produtos
+--   Confere se o nome do produto é nulo ou vazio
+--   Se sim, não permite a atualização
+DELIMITER //
+
+CREATE TRIGGER before_update_nome_produto
+BEFORE UPDATE ON Produto
+FOR EACH ROW
+BEGIN
+    IF NEW.nome_produto IS NULL OR NEW.nome_produto = '' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Erro: O nome do produto não pode ser vazio ou nulo!';
+    END IF;
+END ;
+//
+
+DELIMITER ;
+
+SHOW TRIGGERS;

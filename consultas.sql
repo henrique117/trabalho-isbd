@@ -1,3 +1,7 @@
+-- ========================
+-- (f) 12 consultas diferentes
+-- ========================
+
 -- F1) Consulta com INNER JOIN
 -- Recupera os nomes dos fornecedores e os nomes dos produtos que eles fornecem.
 SELECT f.nome_fornecedor, p.nome_produto
@@ -95,4 +99,3 @@ WHERE EXISTS (
     WHERE p.cnpj_fornecedor = f.cnpj
     AND p.quantidade_estoque > 100
 );
-
