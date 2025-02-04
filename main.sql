@@ -88,8 +88,8 @@ CREATE TABLE IF NOT EXISTS `empresa`.`Cliente` (
   CONSTRAINT `fk_Cliente_Pessoa1`
     FOREIGN KEY (`cpf`)
     REFERENCES `empresa`.`Pessoa` (`cpf`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -127,8 +127,8 @@ CREATE TABLE IF NOT EXISTS `empresa`.`Funcionario` (
   CONSTRAINT `fk_Funcionario_Pessoa1`
     FOREIGN KEY (`cpf`)
     REFERENCES `empresa`.`Pessoa` (`cpf`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -913,9 +913,9 @@ WHERE cpf NOT IN (
 DELETE FROM Endereco
 WHERE cep = 12345001;
 
--- Delete de uma linha na tabela Fornecedor, que possui o cnpj '12345678000190'
-DELETE FROM Fornecedor
-WHERE cnpj = '12345678000190';
+-- Delete de uma linha na tabela Pessoa, que possui o cpf '12345678901'
+DELETE FROM Pessoa
+WHERE cpf = '12345678901';
 
 -- 12 Consultas diferentes (f)
 
@@ -1016,3 +1016,4 @@ WHERE EXISTS (
     WHERE p.cnpj_fornecedor = f.cnpj
     AND p.quantidade_estoque > 100
 );
+
