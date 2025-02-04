@@ -1017,3 +1017,39 @@ WHERE EXISTS (
     AND p.quantidade_estoque > 100
 );
 
+-- ========================
+-- (g) Criação de Visões (Views)
+-- ========================
+
+-- Visão: Vendas por Cliente (vendas_cliente)
+CREATE VIEW vendas_cliente AS
+SELECT v.id_venda, v.data, v.valor_venda, p.nome AS cliente
+FROM Venda v
+JOIN Cliente c ON v.cpf_cliente = c.cpf
+JOIN Pessoa p ON c.cpf = p.cpf;
+
+-- Visão: Estoque de Produtos (estoque_produtos)
+CREATE VIEW estoque_produtos AS
+SELECT SKU, nome_produto, quantidade_estoque, valor_produto_venda
+FROM Produto;
+
+-- Visão: Compras por Fornecedor (compras_fornecedor)
+CREATE VIEW compras_fornecedor AS
+SELECT c.id_compra, c.data_compra, c.valor_compra, f.nome_fornecedor, f.email
+FROM Compra c
+JOIN Fornecedor f ON c.cnpj_fornecedor = f.cnpj;
+
+-- ========================
+-- (h) Gerenciamento de Usuários e Permissões
+-- ========================
+
+-- Criação de Usuários
+CREATE USER 'gestor'@'localhost' IDENTIFIED BY 'senha123';
+CREATE USER 'vendedor'@'localhost' IDENTIFIED BY 'senha456';
+
+-- Concessão de Permissões
+GRANT ALL PRIVILEGES ON empresa.* TO 'gestor'@'localhost'; -- O gestor tem acesso total ao banco
+GRANT SELECT, INSERT ON empresa.Venda TO 'vendedor'@'localhost'; -- O vendedor pode consultar e inserir vendas
+
+-- Revogação de Permissões (remove a permissão de INSERT do 'vendedor')
+REVOKE INSERT ON empresa.Venda FROM 'vendedor'@'localhost';
