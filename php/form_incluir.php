@@ -12,19 +12,19 @@
 
         <?php
 
-        include("./config.php");
+        include("./config.php"); # Importar o arquivo de configuração
 
-        $conexao = mysqli_connect($host, $login, $senha, $bd);
-        $result = [0, '', '', 0.00, ''];
+        $conexao = mysqli_connect($host, $login, $senha, $bd); # Cria uma conexão com o banco de dados
+        $result = [0, '', '', 0.00, '']; # Inicia o vetor de resultado para preencher os campos caso o usuário vá editar um item
 
-        if(isset($_GET["sku"])) {
+        if(isset($_GET["sku"])) { # Checa se ele clicou no botão de editar ou de inserir (Se existir o parâmetro sku significa que ele clicou no botão editar)
 
-            $sql = "SELECT * FROM Produtos WHERE SKU = ".$_GET["sku"]."";
-            $tabela = mysqli_query($conexao, $sql);
-            $result = mysqli_fetch_row($tabela);
+            $sql = "SELECT * FROM Produtos WHERE SKU = ".$_GET["sku"].""; # SQL
+            $tabela = mysqli_query($conexao, $sql); # Roda o SQL e salva os resultados em uma tabela
+            $result = mysqli_fetch_row($tabela); # Coloca os dados da tabela em um vetor
 
             ?>
-            <input type="hidden" name="sku" value="<?php echo $_GET["sku"]; ?>">
+            <input type="hidden" name="sku" value="<?php echo $_GET["sku"]; # Aqui ele adiciona o sku do item que vai ser editado no formulário pra passar para a função de incluir?>">
             <h1>Editar registro</h1>
             <?php
         } else {
@@ -33,6 +33,7 @@
             <?php
         }
 
+        mysqli_close($conexao); # Fecha a conexão com o banco de dados
         ?>
 
         <div class="container">

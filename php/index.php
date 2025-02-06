@@ -12,18 +12,18 @@
 
     <div class="container">
         <?php
-        include("./config.php");
+        include("./config.php"); # Importar o arquivo de configuração
 
-        $conexao = mysqli_connect($host, $login, $senha, $bd);
-        $sql = "SELECT * FROM Produtos ORDER BY SKU";
+        $conexao = mysqli_connect($host, $login, $senha, $bd); # Cria uma conexão com o banco de dados
+        $sql = "SELECT * FROM Produtos ORDER BY SKU"; # SQL
         
-        $tabela = mysqli_query($conexao, $sql);
+        $tabela = mysqli_query($conexao, $sql); # Roda o SQL e salva os resultados em uma tabela
 
         ?>
         <table>
         <?php
 
-        if(mysqli_num_rows($tabela) == 0) {
+        if(mysqli_num_rows($tabela) == 0) { # Checa se existe registros na tabela
             ?>
             <h3>Nao existe nenhum produto cadastrado!</h3>
             <?php
@@ -38,7 +38,7 @@
                 <th>Opcoes</th>
             </tr>
             <?php
-            while($data = mysqli_fetch_row($tabela)) {
+            while($data = mysqli_fetch_row($tabela)) { # Para cada linha da tabela, extrai os dados e armazena no vetor $data
                 ?>
                 <tr>
                     <td><?php echo $data[0]; ?></td>
@@ -55,7 +55,7 @@
             }
         }
 
-        mysqli_close($conexao)
+        mysqli_close($conexao); # Fecha a conexão com o banco de dados
         ?>
 
         <input class="button-geral button-blue" type="button" value="Inserir novo produto" onclick="location.href='form_incluir.php'">
