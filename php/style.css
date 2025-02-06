@@ -1,0 +1,118 @@
+* {
+    margin: 0;
+    border: none;
+}
+
+body, form {
+    width: 100vw;
+    height: 100vh;
+}
+
+h1 {
+    display: flex;
+    width: 100%;
+    height: 20%;
+    font-size: 42px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+h3 {
+    display: flex;
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 4rem;
+}
+
+.button-td {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.button-geral {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    color: white;
+    padding: 1rem;
+    cursor: pointer;
+}
+
+.button-red {
+    background-color: red;
+}
+
+.button-blue {
+    background-color: blue;
+}
+
+.container {
+    height: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+table {
+    margin-top: 3rem;
+    width: 80%;
+    border-collapse: collapse;
+}
+
+tbody {
+    border: 0.5px solid black;
+}
+
+tr {
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+}
+
+th, td {
+    width: 20%;
+    padding: 10px;
+    border: 0.5px solid black;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.td-acoes {
+    gap: 10px;
+}
+
+.span-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 25%;
+    height: 40px;
+}
+
+.text-input {
+    border-radius: 5px;
+    border: 1px solid black;
+    height: 50%;
+}
+
+.form-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 20%;
+    margin-top: 2rem;
+}
